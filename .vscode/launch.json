@@ -1,0 +1,14 @@
+{
+    "version": "0.0.1",
+    "configurations": [
+        {
+            "name": "worker",
+            "type": "python",
+            "request": "launch",
+            "module": "worker",
+            "envFile": "${workspaceFolder}/.env",
+            "console": "internalConsole",
+        },
+    ]
+  }
+  

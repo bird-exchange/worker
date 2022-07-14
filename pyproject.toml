@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "worker"
+version = "0.1.0"
+description = ""
+authors = ["ProtKsen <protcenko.kseniya@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mypy = "^0.961"
+flake8 = "^4.0.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
