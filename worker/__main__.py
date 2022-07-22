@@ -1,5 +1,6 @@
 import logging
 import pathlib
+import time
 
 from worker.client.api import app_client
 from worker.client.aws import aws_client
@@ -45,6 +46,7 @@ def main():
                 delete_file(result_file_path)
 
             app_client.update_image(image, was_fitted)
+        time.sleep(3)
 
 
 if __name__ == "__main__":
