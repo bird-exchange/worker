@@ -4,14 +4,14 @@ import time
 
 from worker.client.api import app_client
 from worker.client.aws import aws_client
-from worker.config import config
-from worker.handler.watcher import draft_handler
+from worker.config import config, handler_config
+from worker.handler.general import general
 
 logger = logging.getLogger(__name__)
 
 
 def save_file(file_path: str, file: bytes) -> None:
-    pathlib.Path(config.temp_file_storage).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(f'{config.temp_file_storage}/testA').mkdir(parents=True, exist_ok=True)
     with open(file_path, 'wb') as f_in:
         f_in.write(file)
 
@@ -32,12 +32,13 @@ def main():
             if origin_file_url:
 
                 origin_file = aws_client.get_file(origin_file_url)
-                origin_file_path = f'{config.temp_file_storage}/{image.name}'
+                origin_file_path = f'{config.temp_file_storage}/testA/{image.name}'
                 save_file(origin_file_path, origin_file)
 
-                result_file_path = draft_handler(origin_file_path, image.name)
+                general(type_img=image.type, name_img=image.name)
+                result_file_path = f'{handler_config.path_test_results}{image.name}'
                 result_file = open(result_file_path, 'rb')
-                is_upload = app_client.post_file(result_file, result_file_path)
+                is_upload = app_client.post_file(result_file, image.name)
                 if is_upload:
                     was_fitted = 1
                 result_file.close()
