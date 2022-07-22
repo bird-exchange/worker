@@ -23,7 +23,7 @@ class AppClient():
             except ValidationError:
                 logger.exception("Server sent invalid data.")
         elif response.status_code == 404:
-            logger.exception("No task.")
+            logger.info("No task.")
         else:
             logger.exception("Server error.")
         return None
