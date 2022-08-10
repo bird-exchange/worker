@@ -5,7 +5,7 @@ import httpx
 from pydantic.error_wrappers import ValidationError
 
 from worker.config import config
-from worker.schemas import Image
+from worker.schemas import Bird
 
 logger = logging.getLogger(__name__)
 
@@ -14,12 +14,12 @@ class AppClient():
     def __init__(self, endpoint: str) -> None:
         self.url = endpoint
 
-    def get_task(self) -> Optional[Image]:
+    def get_task(self) -> Optional[Bird]:
         response = httpx.get(f'{self.url}/task/')
         if response.status_code == 200:
             try:
-                image = Image(**response.json())
-                return image
+                bird = Bird(**response.json())
+                return bird
             except ValidationError:
                 logger.exception("Server sent invalid data.")
         elif response.status_code == 404:
@@ -29,28 +29,28 @@ class AppClient():
         return None
 
     def get_origin_file_url(self, uid: int) -> Optional[str]:
-        response = httpx.get(f'{self.url}/files/origin/{uid}')
+        response = httpx.get(f'{self.url}/image/origin/{uid}')
         if response.status_code == 200:
             return response.text
         logger.exception("Server doesn't sent file url.")
         return None
 
     def post_file(self, file: bytes, filename: str) -> bool:
-        upload_url = f'{config.endpoint}/files/result/'
+        upload_url = f'{config.endpoint}/image/result/'
         files = {'file': (filename, file)}
         answer = httpx.post(upload_url, files=files)
         return answer.status_code == 201
 
-    def update_image(self, image: Image, was_fitted: int) -> None:
-        image_id = image.dict()['uid']
+    def update_bird(self, bird: Bird, was_fitted: int) -> None:
+        bird_id = bird.dict()['uid']
         headers = {"Content-Type": "application/json", "Accept": "*/*"}
-        payload = image.dict()
+        payload = bird.dict()
         payload['was_fitted'] = was_fitted
-        updated_image = Image(**payload)
-        data = updated_image.json()
-        response = httpx.put(f'{self.url}/image/{image_id}', data=data, headers=headers)
+        updated_bird = Bird(**payload)
+        data = updated_bird.json()
+        response = httpx.put(f'{self.url}/bird/{bird_id}', data=data, headers=headers)
         if response.status_code != 200:
-            logger.exception("Server doesn't update image.")
+            logger.exception("Server doesn't update bird.")
 
 
 app_client = AppClient(config.endpoint)

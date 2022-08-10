@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Image(BaseModel):
+class Bird(BaseModel):
     uid: int
     name: str
     type: int

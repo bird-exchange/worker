@@ -22,23 +22,23 @@ def delete_file(file_path: str) -> None:
 
 def main():
     while True:
-        image = app_client.get_task()
+        bird = app_client.get_task()
 
-        if image:
+        if bird:
 
             was_fitted = -1
-            origin_file_url = app_client.get_origin_file_url(image.uid)
+            origin_file_url = app_client.get_origin_file_url(bird.uid)
 
             if origin_file_url:
 
                 origin_file = aws_client.get_file(origin_file_url)
-                origin_file_path = f'{config.temp_file_storage}/testA/{image.name}'
+                origin_file_path = f'{config.temp_file_storage}/testA/{bird.name}'
                 save_file(origin_file_path, origin_file)
 
-                general(type_img=image.type, name_img=image.name)
-                result_file_path = f'{handler_config.path_test_results}{image.name}'
+                general(type_img=bird.type, name_img=bird.name)
+                result_file_path = f'{handler_config.path_test_results}{bird.name}'
                 result_file = open(result_file_path, 'rb')
-                is_upload = app_client.post_file(result_file, image.name)
+                is_upload = app_client.post_file(result_file, bird.name)
                 if is_upload:
                     was_fitted = 1
                 result_file.close()
@@ -46,7 +46,7 @@ def main():
                 delete_file(origin_file_path)
                 delete_file(result_file_path)
 
-            app_client.update_image(image, was_fitted)
+            app_client.update_bird(bird, was_fitted)
         time.sleep(3)
 
 
