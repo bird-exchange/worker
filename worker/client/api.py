@@ -28,16 +28,16 @@ class AppClient():
             logger.exception("Server error.")
         return None
 
-    def get_origin_file_url(self, uid: int) -> Optional[str]:
+    def get_origin_image_url(self, uid: int) -> Optional[str]:
         response = httpx.get(f'{self.url}/image/origin/{uid}')
         if response.status_code == 200:
             return response.text
-        logger.exception("Server doesn't sent file url.")
+        logger.exception("Server doesn't sent image url.")
         return None
 
-    def post_file(self, file: bytes, filename: str) -> bool:
+    def post_image(self, image: bytes, imagename: str) -> bool:
         upload_url = f'{config.endpoint}/image/result/'
-        files = {'file': (filename, file)}
+        files = {'file': (imagename, image)}
         answer = httpx.post(upload_url, files=files)
         return answer.status_code == 201
 
