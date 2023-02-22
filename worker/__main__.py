@@ -27,24 +27,26 @@ def main():
         if bird:
 
             was_fitted = -1
-            origin_image_url = app_client.get_origin_image_url(bird.uid)
 
-            if origin_image_url:
+            origin_image_name = bird.name
+            aws_client.download_image_by_name(
+                filename=origin_image_name,
+                bucket='input-images',
+                file_storage=f'{config.temp_file_storage}/testA/'
+            )
+            origin_image_path = f'{config.temp_file_storage}/testA/{bird.name}'
 
-                origin_image = aws_client.get_image(origin_image_url)
-                origin_image_path = f'{config.temp_file_storage}/testA/{bird.name}'
-                save_image(origin_image_path, origin_image)
+            general(type_img=bird.type, name_img=bird.name)
 
-                general(type_img=bird.type, name_img=bird.name)
-                result_image_path = f'{handler_config.path_test_results}{bird.name}'
-                result_image = open(result_image_path, 'rb')
-                is_upload = app_client.post_image(result_image, bird.name)
-                if is_upload:
-                    was_fitted = 1
-                result_image.close()
+            result_image_path = f'{handler_config.path_test_results}{bird.name}'
+            result_image = open(result_image_path, 'rb')
+            is_upload = app_client.post_image(result_image, bird.name)
+            if is_upload:
+                was_fitted = 1
+            result_image.close()
 
-                delete_image(origin_image_path)
-                delete_image(result_image_path)
+            delete_image(origin_image_path)
+            delete_image(result_image_path)
 
             app_client.update_bird(bird, was_fitted)
         time.sleep(3)

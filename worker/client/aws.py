@@ -1,18 +1,30 @@
-import logging
-from typing import Optional
 
-import httpx
+import boto3
+import botocore
 
-logger = logging.getLogger(__name__)
+from worker.config import config
+
+session = boto3.session.Session()
+
+s3_client = session.client(
+    service_name='s3',
+    endpoint_url=config.aws.endpoint,
+    aws_access_key_id=config.aws.key_id,
+    aws_secret_access_key=config.aws.key,
+)
 
 
 class AWSClient():
-    def get_image(self, url: str) -> Optional[bytes]:
-        response = httpx.get(url)
-        if response.status_code == 200:
-            return response.content
-        logger.exception("Image could not be loaded.")
-        return None
+
+    def download_image_by_name(self, filename: str, bucket: str, file_storage: str):
+        try:
+            s3_client.download_file(
+                Bucket=bucket,
+                Key=filename,
+                Filename=f'{file_storage}/{filename}'
+            )
+        except botocore.exceptions.ClientError:
+            pass
 
 
 aws_client = AWSClient()
