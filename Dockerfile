@@ -9,6 +9,6 @@ RUN pip install --no-cache-dir poetry
 COPY poetry.lock pyproject.toml /webapp/
 RUN poetry install --no-dev
 
-COPY backend /webapp/worker
+COPY worker /webapp/worker
 
 CMD ["python", "-m", "worker"]
