@@ -6,15 +6,16 @@ authors = ["ProtKsen <protcenko.kseniya@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-mypy = "^0.961"
-flake8 = "^4.0.1"
 pydantic = "^1.9.1"
 httpx = "^0.23.0"
 torch = "^1.12.0"
 torchvision = "^0.13.0"
 tqdm = "^4.64.0"
+boto3 = "^1.26.76"
 
 [tool.poetry.dev-dependencies]
+mypy = "^0.961"
+flake8 = "^4.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
