@@ -10,10 +10,12 @@ class AwsConfig(BaseModel):
     bucket_output_images: str
     endpoint: str
 
+
 class AppConfig(BaseModel):
     endpoint: str
     temp_file_storage: str
     aws: AwsConfig
+
 
 class HandlerConfig(BaseModel):
     path_to_data: str
