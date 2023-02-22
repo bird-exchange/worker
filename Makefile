@@ -2,11 +2,11 @@
 export
 
 lint:
-	@mypy recognizer
-	@flake8 recognizer
+	@mypy worker
+	@flake8 worker
 
 dev.install:
 	@poetry install
 
 run:
-	@python -m recognizer
+	@python -m worker
