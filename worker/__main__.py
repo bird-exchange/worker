@@ -1,4 +1,5 @@
 import logging
+import os
 import pathlib
 import time
 
@@ -21,6 +22,14 @@ def delete_image(image_path: str) -> None:
 
 
 def main():
+
+    if not os.path.exists(f'{config.temp_file_storage}'):
+        os.makedirs(f'{config.temp_file_storage}')
+    if not os.path.exists(f'{config.temp_file_storage}/testA/'):
+        os.makedirs(f'{config.temp_file_storage}/testA/')
+    if not os.path.exists(f'{config.temp_file_storage}/res/'):
+        os.makedirs(f'{config.temp_file_storage}/res/')
+
     while True:
         bird = app_client.get_task()
 
